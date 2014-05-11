@@ -1,6 +1,8 @@
 var Hapi = require('hapi');
 var UserProfile = require('./UserProfiles/UserProfile.js');
 var BusinessProfile = require('./BusinessProfiles/BusinessProfile.js');
+var Algo = require('./Algo/Algo.js');
+
 
 var server = Hapi.createServer('localhost', 8000);
 var baseAddress = '/lucky';
@@ -41,6 +43,23 @@ server.route({
         });
     }
 });
+
+
+server.route({
+    method: 'GET',
+    path: baseAddress + '/users/{username}/getRecomendedRests',
+    handler: function (request, reply) {
+        console.log('getRecomendedRests...')
+        Algo.getRecomendedRests(function(err, result){
+            if (err) {
+                reply(err).code(404);
+            }else{
+                reply(result);
+            }
+        })
+    }
+});
+
 
 server.route({
     method: 'POST',
