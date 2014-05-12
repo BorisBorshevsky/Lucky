@@ -19,6 +19,6 @@
   "homepage": "https://github.com/BorisBorshevsky/Lucky",
   "dependencies": {
     "hapi": "^4.0.0",
-    "mongodb": "^1.4.0"
+    "mongodb": "^1.4.3"
   }
 }
