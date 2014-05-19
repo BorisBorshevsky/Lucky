@@ -16,7 +16,7 @@ module.exports.CreateUserProfile = function(info, callback){
           callback("The user alleady exists")
           return;
         }
-        collection.insert({username:info.username}, function(err, docs){
+        collection.insert({username:info.username, kosher:info.kosher, styles:info.styles}, function(err, docs){
           if (err) {
             callback(err)
           }
@@ -27,22 +27,22 @@ module.exports.CreateUserProfile = function(info, callback){
     }) 
   }
 
-  module.exports.GetUserProfile = function(username, callback) {
+module.exports.GetUserProfile = function(username, callback) {
     MongoClient.connect('mongodb://127.0.0.1:27017/Lucky', function(err, db) {
-      console.log("Connected to db")
-      if(err){
-        callback(err)
-        return;
-      }
-      var collection = db.collection('users');
-      collection.findOne({"username":username}, function(err, document) {
-        if (!document) {
-          db.close();
-          callback("The user not found")
+        console.log("Connected to db")
+        if(err){
+          callback(err)
           return;
         }
-        callback(null,document)
-        db.close();
-      });
+        var collection = db.collection('users');
+        collection.findOne({"username":username}, function(err, document) {
+          if (!document) {
+            db.close();
+            callback("The user not found")
+            return;
+          }
+          callback(null,document)
+          db.close();
+        });
     });
-  }
+}

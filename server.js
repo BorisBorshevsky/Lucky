@@ -1,7 +1,8 @@
 var Hapi = require('hapi');
-var UserProfile = require('./UserProfiles/UserProfile.js');
-var BusinessProfile = require('./BusinessProfiles/BusinessProfile.js');
-var Algo = require('./Algo/Algo.js');
+var UserRepository = require('./users/userRepository.js');
+var BusinessRepository = require('./businesses/businessRepository.js');
+
+var usersEndpoint = require('./endpoints/users.js');
 
 
 var server = Hapi.createServer('localhost', 8000);
@@ -20,7 +21,7 @@ server.route({
     method: 'POST',
     path: baseAddress + '/users',
     handler: function (request, reply) {
-        UserProfile.CreateUserProfile(request.payload, function(err){
+        UserRepository.CreateUserProfile(request.payload, function(err){
             if (err) {
                 reply(err).code(409);
             }else{
@@ -34,7 +35,7 @@ server.route({
     method: 'GET',
     path: baseAddress + '/users/{username}',
     handler: function (request, reply) {
-        UserProfile.GetUserProfile(request.params.username, function(err, result){
+        UserRepository.GetUserProfile(request.params.username, function(err, result){
             if (err) {
                 reply(err).code(404);
             }else{
@@ -48,16 +49,7 @@ server.route({
 server.route({
     method: 'GET',
     path: baseAddress + '/users/{username}/getRecomendedRests',
-    handler: function (request, reply) {
-        console.log('getRecomendedRests...')
-        Algo.getRecomendedRests(function(err, result){
-            if (err) {
-                reply(err).code(404);
-            }else{
-                reply(result);
-            }
-        })
-    }
+    handler: usersEndpoint.getRecomendedRests
 });
 
 
@@ -65,7 +57,7 @@ server.route({
     method: 'POST',
     path: baseAddress + '/business',
     handler: function (request, reply) {
-        BusinessProfile.CreateBusinessProfile(request.payload, function(err){
+        BusinessRepository.CreateBusinessProfile(request.payload, function(err){
             if (err) {
                 reply(err).code(409);
             }else{
@@ -79,7 +71,7 @@ server.route({
     method: 'GET',
     path: baseAddress + '/business/{businessName}',
     handler: function (request, reply) {
-        BusinessProfile.GetBusinessProfile(request.params.businessName, function(err, result){
+        BusinessRepository.GetBusinessProfile(request.params.businessName, function(err, result){
             if (err) {
                 reply(err).code(404);
             }else{

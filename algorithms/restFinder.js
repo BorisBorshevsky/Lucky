@@ -108,8 +108,8 @@ getRestsWithScore = function(user,rests){
 
 
 
-var getRecomendedRests = function(callback) {
-    var rests = getRestsWithScore(getUserInfo(), getRests())
+var getRecomendedRests = function(user, callback) {
+    var rests = getRestsWithScore(user, getRests())
     
     rests.sort(function(a,b) {
         return b.score - a.score
