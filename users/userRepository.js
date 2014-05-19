@@ -10,18 +10,18 @@ module.exports.CreateUserProfile = function(info, callback){
       
   
       var collection = db.collection('users');
-      collection.find({"username":info.username}).toArray(function(err, results) {
-        if (results.length > 0) {
-          db.close();
-          callback("The user alleady exists")
-          return;
+      collection.findOne({"username":info.username},function(err, results) {
+        if (results) {
+            db.close();
+            callback("The user alleady exists")
+            return;
         }
         collection.insert({username:info.username, kosher:info.kosher, styles:info.styles}, function(err, docs){
-          if (err) {
-            callback(err)
-          }
-          callback()
-          db.close();
+            if (err) {
+              callback(err)
+            }
+            callback()
+            db.close();
         });
       });
     }) 
