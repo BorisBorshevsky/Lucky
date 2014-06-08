@@ -4,8 +4,8 @@ var BusinessRepository = require('./businesses/businessRepository.js');
 
 var usersEndpoint = require('./endpoints/users.js');
 
-
-var server = Hapi.createServer('localhost', 8000);
+  
+var server = Hapi.createServer(process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1', process.env.OPENSHIFT_NODEJS_PORT || 8080);
 var baseAddress = '/lucky';
 
 
