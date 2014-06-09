@@ -1,7 +1,10 @@
 var MongoClient = require('mongodb').MongoClient
 
+
+//-u admin -p vcFx1_6Y5_rT --host $OPENSHIFT_MONGODB_DB_HOST --port $OPENSHIFT_MONGODB_DB_PORT lucky
+
 module.exports.CreateUserProfile = function(info, callback){
-    MongoClient.connect('mongodb://127.0.0.1:27017/Lucky', function(err, db) {
+    MongoClient.connect('mongodb://admin:vcFx1_6Y5_rT@$OPENSHIFT_MONGODB_DB_HOST:$OPENSHIFT_MONGODB_DB_PORT/', function(err, db) {
       console.log("Connected to db")
       if(err){
         callback(err)
