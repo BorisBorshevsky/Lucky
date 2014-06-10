@@ -6,8 +6,8 @@ if (process.env.os == 'Windows_NT') {
   var mongoConncetionString = 'mongodb://admin:vcFx1_6Y5_rT@' + process.env.OPENSHIFT_MONGODB_DB_HOST + ':' + process.env.OPENSHIFT_MONGODB_DB_PORT  + '/lucky';  
 };
 
-
 //mongo -u admin -p vcFx1_6Y5_rT --host $OPENSHIFT_MONGODB_DB_HOST --port $OPENSHIFT_MONGODB_DB_PORT lucky
+
 
 module.exports.CreateUserProfile = function(info, callback){
     MongoClient.connect(mongoConncetionString, function(err, db) {
@@ -15,17 +15,16 @@ module.exports.CreateUserProfile = function(info, callback){
       if(err){
         callback(err)
         return;
-      }
-      
+      }      
   
       var collection = db.collection('users');
       collection.findOne({"username":info.username},function(err, results) {
         if (results) {
             db.close();
-            callback("The user alleady exists")
+            callback("The user allready exists")
             return;
         }
-        collection.insert({username:info.username, kosher:info.kosher, styles:info.styles}, function(err, docs){
+        collection.insert({username:info.username, kosher:info.kosher, styles:info.styles, password:info.password}, function(err, docs){
             if (err) {
               callback(err)
             }

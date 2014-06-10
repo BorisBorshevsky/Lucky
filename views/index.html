@@ -1,13 +1,35 @@
 <!DOCTYPE html>
 <html>
+	<head>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	</head>
+	
 	<body>
-	<h1>login</h1> <br>
-		<form action='"http://localhost:8080/lucky/" + username' method="get">
-  			Username:  <input type="text" name="username"><br>
-  			Password: <input type="password" name="passwd"><br>
-  			
-  			<input type="submit" value="Submit">
+		<h1>Register new user</h1> <br>
+
+		
+		<form id="register" action="javascript:">
+		  <div>
+		    Username: <input type="text" id="register_user"> <br>
+		    Password: <input type="text" id="register_passwd"> <br>
+		    <input type="submit">
+		  </div>
 		</form>
+		 
+		<script>
+			var baseAddr = 'http://localhost:8080/lucky/users'
+
+			$("#register").submit(function( event ) {
+				var username = $( "#register_user" ).val();
+				var passwd = $( "#register_passwd" ).val();
+					$.post( baseAddr, $( "#register" ).serialize() );
+			});
+		
+		</script>
+ 
+
+
+
 
 	</body>
 </html>
