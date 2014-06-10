@@ -1,8 +1,13 @@
 var MongoClient = require('mongodb').MongoClient
 
-var mongoConncetionString = 'mongodb://admin:vcFx1_6Y5_rT@' + process.env.OPENSHIFT_MONGODB_DB_HOST + ':' + process.env.OPENSHIFT_MONGODB_DB_PORT  + '/lucky';
+if (process.env.os == 'Windows_NT') {
+  var mongoConncetionString = 'mongodb://127.0.0.1:27017/lucky'
+} else{
+  var mongoConncetionString = 'mongodb://admin:vcFx1_6Y5_rT@' + process.env.OPENSHIFT_MONGODB_DB_HOST + ':' + process.env.OPENSHIFT_MONGODB_DB_PORT  + '/lucky';  
+};
 
-//-u admin -p vcFx1_6Y5_rT --host $OPENSHIFT_MONGODB_DB_HOST --port $OPENSHIFT_MONGODB_DB_PORT lucky
+
+//mongo -u admin -p vcFx1_6Y5_rT --host $OPENSHIFT_MONGODB_DB_HOST --port $OPENSHIFT_MONGODB_DB_PORT lucky
 
 module.exports.CreateUserProfile = function(info, callback){
     MongoClient.connect(mongoConncetionString, function(err, db) {
