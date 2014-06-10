@@ -4,8 +4,10 @@ var BusinessRepository = require('./businesses/businessRepository.js');
 
 var usersEndpoint = require('./endpoints/users.js');
 
+var srvaddr = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+var portnum = process.env.OPENSHIFT_NODEJS_PORT || 8080;
   
-var server = Hapi.createServer(process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1', process.env.OPENSHIFT_NODEJS_PORT || 8080);
+var server = Hapi.createServer(srvaddr, portnum);
 var baseAddress = '/lucky';
 
 
@@ -82,4 +84,4 @@ server.route({
 });
 
 server.start();
-console.log("The server is running...")
+console.log("The server is running on " +  server.info.uri + " ...")
