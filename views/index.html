@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	</head>
+	
+	<body>
+		<h1>Register new user</h1> <br>
+
+		
+		<form id="register" action="javascript:">
+		  <div>
+		    Username: <input type="text" id="register_user"> <br>
+		    Password: <input type="text" id="register_passwd"> <br>
+		    <input type="submit">
+		  </div>
+		</form>
+		 
+		<script>
+			var baseAddr = 'http://localhost:8080/lucky/users'
+
+			$("#register").submit(function( event ) {
+				var username = $( "#register_user" ).val();
+				var passwd = $( "#register_passwd" ).val();
+					$.post( baseAddr, $( "#register" ).serialize() );
+			});
+		
+		</script>
+ 
+
+
+
+
+	</body>
+</html>

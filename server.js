@@ -3,47 +3,58 @@ var UserRepository = require('./repositories/users.js');
 var BusinessRepository = require('./repositories/businesses.js');
 var Nconf = require('nconf');
 var MongoHelper = require('./repositories/mongoHelper.js')
-
 var usersEndpoint = require('./endpoints/users.js');
+var businessesEndpoint = require('./endpoints/businesses.js');
+
 
 var server = Hapi.createServer(process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1', process.env.OPENSHIFT_NODEJS_PORT || 8080);
 var baseAddress = '/lucky';
+
+server.views({
+    engines: {
+        jade: 'jade'
+    },
+    path: __dirname + '/templates'
+});
 
 
 server.route({
     method: 'GET',
     path: baseAddress,
     handler: function (request, reply) {
-        reply('Lucky');
-    }
-});
-
-server.route({
-    method: 'POST',
-    path: baseAddress + '/users',
-    handler: function (request, reply) {
-        UserRepository.CreateUserProfile(request.payload, function(err){
-            if (err) {
-                reply(err).code(409);
-            }else{
-                reply();
-            }
-        });
+        
+        var context = {
+            title: 'Lucky Main Page',
+            message: 'First try of mainpage'
+        }
+        reply.view('index',context)
     }
 });
 
 server.route({
     method: 'GET',
-    path: baseAddress + '/users/{username}',
+    path: baseAddress + '/userlist',
     handler: function (request, reply) {
-        UserRepository.GetUserProfile(request.params.username, function(err, result){
-            if (err) {
-                reply(err).code(404);
-            }else{
-                reply(result);
-            }
-        });
+        
+        var context = {
+            title: 'Lucky Main Page',
+            message: 'First try of mainpage'
+        }
+        reply.view('index',context)
     }
+});
+
+
+server.route({
+    method: 'POST',
+    path: baseAddress + '/users',
+    handler: usersEndpoint.createUser
+});
+
+server.route({
+    method: 'GET',
+    path: baseAddress + '/users/{username}',
+    handler: usersEndpoint.getUser
 });
 
 server.route({
@@ -55,30 +66,16 @@ server.route({
 server.route({
     method: 'POST',
     path: baseAddress + '/business',
-    handler: function (request, reply) {
-        BusinessRepository.CreateBusinessProfile(request.payload, function(err){
-            if (err) {
-                reply(err).code(409);
-            }else{
-                reply();
-            }
-        });
-    }
+    handler: businessesEndpoint.createBusiness
 });
 
 server.route({
     method: 'GET',
     path: baseAddress + '/business/{businessName}',
-    handler: function (request, reply) {
-        BusinessRepository.GetBusinessProfile(request.params.businessName, function(err, result){
-            if (err) {
-                reply(err).code(404);
-            }else{
-                reply(result);
-            }
-        });
-    }
+    handler: businessesEndpoint.getBusiness
 });
 
 server.start();
-console.log("The server is running... " + server.info.uri  + " , " + MongoHelper.GetConnectionString())
+
+console.log("MongoDB connection : " + MongoHelper.GetConnectionString());
+console.log("The server is running on " + server.info.uri  + " ...");

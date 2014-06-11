@@ -1,8 +1,8 @@
 var RestFinder = require('../algorithms/restFinder.js');
-var usersRepository = require('../repositories/users.js')
+var UsersRepository = require('../repositories/users.js');
 
 module.exports.getRecomendedRests = function (request, reply) {
-    usersRepository.GetUserProfile(request.params.username, function(err, document){
+    UsersRepository.GetUserProfile(request.params.username, function(err, document){
         if (err) {
             console.log("err: " + err);
             reply(err).code(404);
@@ -10,13 +10,28 @@ module.exports.getRecomendedRests = function (request, reply) {
         }
         
         RestFinder.getRecomendedRests(document, function(err, result){
-            if (err) {
+            if (err) 
                 reply(err).code(404);
-            }else{
+            else
                 reply(result);
-            }
-        })
-        
-    })
-    
+        });
+    });
+}
+
+module.exports.createUser = function (request, reply) {
+    UsersRepository.CreateUserProfile(request.payload, function(err){
+        if (err) 
+            reply(err).code(409);
+        else
+            reply();
+    });   
+}
+
+module.exports.getUser = function (request, reply) {
+    UsersRepository.GetUserProfile(request.params.username, function(err, result){
+        if (err) 
+            reply(err).code(404);
+        else
+            reply(result);
+    });
 }
