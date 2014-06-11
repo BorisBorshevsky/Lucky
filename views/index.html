@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{{title}}</title>
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    </head>
+<body>
+    <div>
+        <h1>{{message}}</h1>
+    </div>
+    <form action="/" id="login">
+        <span>Username: </span> <input type="text" id="username_input" placeholder="Username"> <br>
+        <span>Password:</span> <input type="password" id="password_input" placeholder="Username"> <br>
+        <input type="submit" value="Search">
+    </form>
+
+    <!-- the result of the search will be rendered inside this div -->
+    <div id="result"></div>
+
+    <script>
+        // Attach a submit handler to the form
+        $( "#login" ).submit(function( event ) {
+
+            // Stop form from submitting normally
+            event.preventDefault();
+
+            var username = $( "#username_input" ).val();
+            var password = $( "#password_input" ).val();
+
+            // Send the data using post
+            var posting = $.post( "lucky/auth", { username: username, password: password } );
+
+            // Put the results in a div
+            posting.done(function( data ) {
+                alert(JSON.stringify(data))
+            });
+        });
+    </script>
+
+</body>
+</html>

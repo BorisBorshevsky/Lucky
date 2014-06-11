@@ -6,6 +6,7 @@ var MongoHelper = require('./repositories/mongoHelper.js')
 var usersEndpoint = require('./endpoints/users.js');
 var businessesEndpoint = require('./endpoints/businesses.js');
 var viewsEndpoint = require('./endpoints/views.js');
+var authEndpoint = require('./endpoints/auth.js');
 
 
 var srvaddr = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
@@ -17,11 +18,16 @@ var baseAddress = '/lucky';
 
 server.views({
     engines: {
-        jade: 'jade'
+        html: 'handlebars'
     },
-    path: __dirname + '/templates'
+    path: __dirname + '/views'
 });
 
+server.route({
+    method: 'POST',
+    path: baseAddress + '/auth',
+    handler: authEndpoint.authorize
+});
 
 server.route({
     method: 'GET',
@@ -34,7 +40,6 @@ server.route({
     path: baseAddress + '/userslist',
     handler: usersEndpoint.getUsers
 });
-
 
 server.route({
     method: 'POST',
