@@ -1,5 +1,5 @@
 var RestFinder = require('../algorithms/restFinder.js');
-var usersRepository = require('../users/userRepository.js')
+var usersRepository = require('../repositories/users.js')
 
 module.exports.getRecomendedRests = function (request, reply) {
     usersRepository.GetUserProfile(request.params.username, function(err, document){
