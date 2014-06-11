@@ -14,7 +14,6 @@ var baseAddress = '/lucky';
 
 server.views({
     engines: {
-        html: 'handlebars',
         jade: 'jade'
     },
     path: __dirname + '/templates'
@@ -25,14 +24,28 @@ server.route({
     method: 'GET',
     path: baseAddress,
     handler: function (request, reply) {
+        
         var context = {
             title: 'Lucky Main Page',
             message: 'First try of mainpage'
         }
-        reply.view('main.html',context)
-    //        reply('Lucky');
+        reply.view('index',context)
     }
 });
+
+server.route({
+    method: 'GET',
+    path: baseAddress + '/userlist',
+    handler: function (request, reply) {
+        
+        var context = {
+            title: 'Lucky Main Page',
+            message: 'First try of mainpage'
+        }
+        reply.view('index',context)
+    }
+});
+
 
 server.route({
     method: 'POST',

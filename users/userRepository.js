@@ -33,7 +33,7 @@ module.exports.CreateUserProfile = function(info, callback){
         });
       });
     }) 
-  }
+}
 
 module.exports.GetUserProfile = function(username, callback) {
     MongoClient.connect(mongoConncetionString, function(err, db) {
@@ -54,3 +54,6 @@ module.exports.GetUserProfile = function(username, callback) {
         });
     });
 }
+
+
+
