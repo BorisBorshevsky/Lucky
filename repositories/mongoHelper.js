@@ -6,7 +6,7 @@ Nconf.argv()
 
 module.exports.GetConnectionString = function(){
 	var mongodbConfig = Nconf.get("mongodb");
-	var mongodbHost = "s";
+	var mongodbHost = "";
 	if (mongodbConfig.host.indexOf(".") > -1)
 	  mongodbHost = mongodbConfig.host
 	else
