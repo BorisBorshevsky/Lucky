@@ -33,14 +33,23 @@ server.route({
 
 server.route({
     method: 'GET',
-    path: baseAddress + '/userlist',
+    path: baseAddress + '/userslist',
     handler: function (request, reply) {
         
         var context = {
-            title: 'Lucky Main Page',
-            message: 'First try of mainpage'
+            title: 'Users List',
+            message: 'This is the list of users:'
         }
-        reply.view('index',context)
+        
+        UserRepository.GetUsersList(function(err,doc){
+            if (err){
+                reply(err).code(404);
+            }else{
+                reply(doc)
+            }
+        })
+        
+        //reply.view('userslist',context)
     }
 });
 

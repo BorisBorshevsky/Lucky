@@ -29,7 +29,7 @@ module.exports.CreateUserProfile = function(info, callback){
         });
       });
     }) 
-  }
+}
 
 module.exports.GetUserProfile = function(username, callback) {
     MongoClient.connect(mongoConncetionString, function(err, db) {
@@ -43,6 +43,26 @@ module.exports.GetUserProfile = function(username, callback) {
           if (!document) {
             db.close();
             callback("The user not found")
+            return;
+          }
+          callback(null,document)
+          db.close();
+        });
+    });
+}
+
+module.exports.GetUsersList = function(callback) {
+    MongoClient.connect(mongoConncetionString, function(err, db) {
+        console.log("Connected to db")
+        if(err){
+          callback(err)
+          return;
+        }
+        var collection = db.collection('users');
+        collection.find({}, function(err, document) {
+          if (!document) {
+            db.close();
+            callback("no users found")
             return;
           }
           callback(null,document)
