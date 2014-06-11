@@ -6,16 +6,31 @@ var usersEndpoint = require('./endpoints/users.js');
 
 var srvaddr = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var portnum = process.env.OPENSHIFT_NODEJS_PORT || 8080;
-  
+
+
+
 var server = Hapi.createServer(srvaddr, portnum);
 var baseAddress = '/lucky';
+
+server.views({
+    engines: {
+        html: 'handlebars',
+        jade: 'jade'
+    },
+    path: __dirname + '/templates'
+});
 
 
 server.route({
     method: 'GET',
     path: baseAddress,
     handler: function (request, reply) {
-        reply('Lucky');
+        var context = {
+            title: 'Lucky Main Page',
+            message: 'First try of mainpage'
+        }
+        reply.view('main.html',context)
+    //        reply('Lucky');
     }
 });
 
