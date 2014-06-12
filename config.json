@@ -1,0 +1,17 @@
+{
+	"mongodb": 
+	{
+		"host" : "127.0.0.1",
+		"port" : 27017,
+		"dbName" : "lucky"
+	},
+	"mongodbProd": 
+	{
+		"host" : "OPENSHIFT_MONGODB_DB_HOST",
+		"port" : "OPENSHIFT_MONGODB_DB_PORT",
+		"username" : "admin",
+		"password" : "vcFx1_6Y5_rT",
+		"dbName" : "lucky"
+	}
+
+}
