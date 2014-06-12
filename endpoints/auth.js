@@ -12,5 +12,3 @@ module.exports.authorize = function (request, reply) {
              	reply("not found").code(401);
     });
 }
-
-

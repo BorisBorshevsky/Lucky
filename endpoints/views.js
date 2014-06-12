@@ -1,7 +1,8 @@
-module.exports.getIndex = function (request, reply) {       
+module.exports.getLogin = function (request, reply) {       
     var context = {
-        title: 'Lucky Main Page',
-        message: 'First try of mainpage'
+        title: 'Lcuky - Login',
+        message: 'Hello - Please Login To Your Account',
+        status: 'loged in or not'
     }
-    reply.view('index',context)
+    reply.view('login',context)
 }
