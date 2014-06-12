@@ -59,7 +59,9 @@ module.exports.GetUsersList = function(callback) {
           return;
         }
         var collection = db.collection('users');
-        collection.find({}, function(err, document) {
+
+        collection.find().toArray(function(err, document) {
+          console.log("check: " + err + document);
           if (!document) {
             db.close();
             callback("no users found")
@@ -68,5 +70,6 @@ module.exports.GetUsersList = function(callback) {
           callback(null,document)
           db.close();
         });
+
     });
 }
