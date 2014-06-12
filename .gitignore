@@ -6,7 +6,6 @@ node_modules
 results.tap
 results.xml
 npm-shrinkwrap.json
-config.json
 .DS_Store
 */.DS_Store
 */*/.DS_Store
