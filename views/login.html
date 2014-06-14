@@ -1,42 +1,14 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>{{title}}</title>
-        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-    </head>
-    
-    <body>
-        <div>
-            <h1>{{message}}</h1>
-        </div>
-        <form action="/" id="login">
-            <span>Username: </span> <input type="text" id="username_input" placeholder="Username"> <br>
-            <span>Password:</span> <input type="password" id="password_input" placeholder="Password"> <br>
-            <input type="submit" value="Login">
-        </form>
+<html>
+	<head>
+		<title>Login page</title>
+	</head>
 
-        <div id="result">Status: {{Status}}</div>
-        <div id="result">Reason: {{error}}</div>
-
-        <script>
-            // Attach a submit handler to the form
-            $( "#login" ).submit(function( event ) {
-
-                // Stop form from submitting normally
-                event.preventDefault();
-
-                var username = $( "#username_input" ).val();
-                var password = $( "#password_input" ).val();
-
-                // Send the data using post
-                var posting = $.post( "lucky/auth", { username: username, password: password } );
-
-                posting.done(function( data ) {
-                    alert(JSON.stringify(data))
-                });
-            });
-        </script>
-
+	<body>	
+		<h3>{{message}}</h3>
+        <form method="post" action="/login">
+        	<span>Username:</span> <input type="text" name="username" placeholder="Username"><br>
+        	<span>Password:</span> <input type="password" name="password" placeholder="Password"><br>
+           	<input type="submit" value="Login">
+         </form>
     </body>
 </html>

@@ -1,10 +1,6 @@
 var Hapi = require('hapi');
 var Nconf = require('nconf');
 
-
-var UserRepository = require('./repositories/users.js');
-var BusinessRepository = require('./repositories/businesses.js');
-
 var MongoHelper = require('./repositories/mongoHelper.js')
 var usersEndpoint = require('./endpoints/users.js');
 var businessesEndpoint = require('./endpoints/businesses.js');
@@ -26,71 +22,12 @@ var users = {
 
 
 
-UserRepository.GetUsersList(function(err, res){
-    console.log("users - local: " + JSON.stringify(users));
-    console.log('users - database: ' + JSON.stringify(res));
-    //users = res
-
-})
-
-
-
-var home = function (request, reply) {
-
-    reply.view('home',{name: request.auth.credentials.name });
-};
-
-var login = function (request, reply) {
-
-    if (request.auth.isAuthenticated) {
-        return reply().redirect('/');
-    }
-
-    var message = '';
-    var account = null;
-
-
-    if (request.method === 'post') {
-
-        if (!request.payload.username ||!request.payload.password) {
-            message = 'Missing username or password';
-        }
-        else {
-            //UserRepository.GetUsersList(function(err,res){
-                //console.log("inside post: " + JSON.stringify(res))
-              //  users = res
-                account = users[request.payload.username];
-            
-                if (!account || account.password !== request.payload.password) {
-                    message = 'Invalid username or password';
-                }
-            //})
-        }
-
-    }
-
-    if (request.method === 'get' || message) {
-
-        return reply.view('login2',{message: message });
-    }
-
-    request.auth.session.set(account);
-    return reply().redirect('/');
-};
-
-var logout = function (request, reply) {
-
-    request.auth.session.clear();
-    return reply().redirect('/');
-};
-
-
 var srvaddr = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var srvport = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
 var server = new Hapi.Server(srvaddr, srvport);
 
-var baseAddress = '/lucky';
+var baseAddress = '/api';
 
 server.pack.require('hapi-auth-cookie', function (err) {
 
@@ -108,20 +45,31 @@ server.pack.require('hapi-auth-cookie', function (err) {
         path: __dirname + '/views'
     });
 
-
     server.route({ 
         method: 'GET', 
         path: '/', 
         config: { 
-            handler: home, 
-            auth: true } 
-        })
+            handler: viewsEndpoint.home, 
+            auth: true 
+        } 
+    })
 
     server.route({ 
-        method: ['GET', 'POST'], 
+        method: 'GET', 
         path: '/login', 
         config: { 
-            handler: login, 
+            handler: authEndpoint.getLoginPage, 
+            auth: { 
+                mode: 'try' 
+            } 
+        } 
+    })
+
+    server.route({ 
+        method: 'POST', 
+        path: '/login', 
+        config: { 
+            handler: authEndpoint.login, 
             auth: { 
                 mode: 'try' 
             } 
@@ -132,22 +80,10 @@ server.pack.require('hapi-auth-cookie', function (err) {
         method: 'GET', 
         path: '/logout', 
         config: { 
-            handler: logout, 
+            handler: authEndpoint.logout, 
             auth: true 
         } 
     })
-
-    server.route({
-        method: 'POST',
-        path: baseAddress + '/auth',
-        handler: authEndpoint.authorize
-        });
-
-    server.route({
-        method: 'GET',
-        path: baseAddress,
-        handler: viewsEndpoint.getLogin
-    });
 
     server.route({
         method: 'GET',

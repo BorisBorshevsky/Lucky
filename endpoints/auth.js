@@ -1,14 +1,37 @@
 var UsersRepository = require('../repositories/users.js');
 
-module.exports.authorize = function (request, reply) {
-    UsersRepository.GetUserProfile(request.payload.username, function(err, result){
-    	console.log(request.payload.password + " : " + request.payload.username + " / " + JSON.stringify(result))
-        if (err) 
-            reply(err).code(401);
-        else
-            if (result.password == request.payload.password)
-                 reply(null,true);
-             else
-             	reply("not found").code(401);
-    });
+module.exports.login = function (request, reply) {
+
+    if (request.auth.isAuthenticated) {
+        return reply().redirect('/');
+    }
+
+    var message = '';
+    if (!request.payload.username ||!request.payload.password) {
+        message = 'Missing username or password';
+        return reply().redirect('/');
+    }
+
+    UsersRepository.GetUserProfile(request.payload.username, function(err,user){
+        if (err || user.password !== request.payload.password) {
+            message = 'Invalid username or password';
+            return reply.view('login',{message: message });
+        }
+        request.auth.session.set(user);
+        return reply().redirect('/');
+    })
+
+};
+
+
+module.exports.getLoginPage = function(request, reply){
+    if (request.auth.isAuthenticated)
+        return reply().redirect('/');
+    reply.view('login');
 }
+
+module.exports.logout = function (request, reply) {
+
+    request.auth.session.clear();
+    return reply().redirect('/');
+};
