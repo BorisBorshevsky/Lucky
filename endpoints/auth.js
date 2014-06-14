@@ -2,9 +2,8 @@ var UsersRepository = require('../repositories/users.js');
 
 module.exports.login = function (request, reply) {
 
-    if (request.auth.isAuthenticated) {
+    if (request.auth.isAuthenticated)
         return reply().redirect('/');
-    }
 
     var message = '';
     if (!request.payload.username ||!request.payload.password) {
@@ -31,7 +30,6 @@ module.exports.getLoginPage = function(request, reply){
 }
 
 module.exports.logout = function (request, reply) {
-
     request.auth.session.clear();
     return reply().redirect('/');
 };

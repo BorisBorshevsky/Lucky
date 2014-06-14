@@ -1,8 +1,9 @@
 var Nconf = require('nconf');
+var Path = require('path');
 
 Nconf.argv()
     .env()
-    .file({ file: __dirname + '../../config.json' });
+    .file({ file: Path.join( __dirname, './../config.json' )});
 
 module.exports.GetConnectionString = function(){
 	var mongodbConfig = Nconf.get("mongodb");
