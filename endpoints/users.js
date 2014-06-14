@@ -38,7 +38,7 @@ module.exports.getUser = function (request, reply) {
 
 
 module.exports.getUsers = function (request, reply) {
-    UserRepository.GetUsersList(function(err,doc){
+    UsersRepository.GetUsers(function(err,doc){
         if (err){
             reply(err).code(404);
         }else{
