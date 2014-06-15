@@ -21,6 +21,10 @@ var users = {
 };
 
 
+var a = function (request, reply) {
+    reply.view('register');
+}
+
 
 var srvaddr = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var srvport = process.env.OPENSHIFT_NODEJS_PORT || 8080;
@@ -84,6 +88,12 @@ server.pack.require('hapi-auth-cookie', function (err) {
             auth: true 
         } 
     })
+
+    server.route({
+        method: 'GET',
+        path: '/register',
+        handler: a
+    });
 
     server.route({
         method: 'GET',
