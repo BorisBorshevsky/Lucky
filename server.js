@@ -21,9 +21,7 @@ var users = {
 };
 
 
-var a = function (request, reply) {
-    reply.view('register');
-}
+
 
 
 var srvaddr = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
@@ -92,7 +90,13 @@ server.pack.require('hapi-auth-cookie', function (err) {
     server.route({
         method: 'GET',
         path: '/register',
-        handler: a
+        handler: viewsEndpoint.register
+    });
+
+    server.route({
+        method: 'POST',
+        path: '/register',
+        handler: authEndpoint.registerNewUser
     });
 
     server.route({
@@ -131,9 +135,7 @@ server.pack.require('hapi-auth-cookie', function (err) {
         handler: businessesEndpoint.getBusiness
     });
 
-
-    server.start();
-    
+    server.start(); 
 
     console.log("MongoDB connection : " + MongoHelper.GetConnectionString());
     console.log("The server is running on " + server.info.uri  + " ...");

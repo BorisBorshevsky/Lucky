@@ -17,10 +17,21 @@ module.exports.CreateUserProfile = function(info, callback){
       collection.findOne({"username":info.username},function(err, results) {
         if (results) {
             db.close();
-            callback("The user alleady exists")
+            callback("The user already exists")
             return;
         }
-        collection.insert({username:info.username, kosher:info.kosher, styles:info.styles}, function(err, docs){
+        
+        var user = {
+          username: info.username,
+          password: info.password,
+          fullname: info.fullname,
+          email: info.email,
+
+          kosher: info.kosher,
+          styles: info.styles
+        }
+
+        collection.insert(user, function(err, docs){
             if (err) {
               callback(err)
             }
