@@ -1,5 +1,6 @@
 module.exports.home = function (request, reply) {
-    reply.view('home',{name: request.auth.credentials.name });
+	console.log(request.auth.credentials.username);
+    reply.view('home',{username: request.auth.credentials.username });
 };
 
 module.exports.register = function (request, reply) {

@@ -27,8 +27,8 @@ module.exports.CreateUserProfile = function(info, callback){
           fullname: info.fullname,
           email: info.email,
 
-          kosher: info.kosher,
-          styles: info.styles
+          kosher: info.kosher || false,
+          styles: info.styles || []
         }
 
         collection.insert(user, function(err, docs){

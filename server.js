@@ -20,10 +20,6 @@ var users = {
     }
 };
 
-
-
-
-
 var srvaddr = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var srvport = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
@@ -35,9 +31,10 @@ server.pack.require('hapi-auth-cookie', function (err) {
 
     server.auth.strategy('session', 'cookie', {
         password: 'secret',
-        cookie: 'sid-example',
+        cookie: 'LuckyLucky',
         redirectTo: '/login',
-        isSecure: false
+        isSecure: false,
+        ttl: 24 * 60 * 60 * 1000
     });
 
     server.views({
@@ -135,7 +132,7 @@ server.pack.require('hapi-auth-cookie', function (err) {
         handler: businessesEndpoint.getBusiness
     });
 
-    server.start(); 
+    server.start();
 
     console.log("MongoDB connection : " + MongoHelper.GetConnectionString());
     console.log("The server is running on " + server.info.uri  + " ...");

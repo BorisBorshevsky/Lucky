@@ -1,13 +1,26 @@
 <html>
 	<head>
 		<title>Login page</title>
+		
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script type="text/javascript">
+			function getRests(){
+				$.get( "/api/users/{{username}}/getRecomendedRests", function( data ) {
+				  $( ".result" ).html( JSON.stringify(data) );
+				});
+			}
+		</script>
+
+
 	</head>
 	<body>
-		<h3>Welcome {{name}} !</h3> <br/>
+		<h3>Welcome {{username}} !</h3> <br/>
 		<p>You are logged in</p>
 		<form method="get" action="/logout">
         	<input type="submit" value="Logout">
        </form>
+       <button onclick="getRests()">get rests</button>
 
+       <div class="result"> </div>
     </body>
 </html>
