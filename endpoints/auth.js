@@ -2,7 +2,6 @@ var UsersRepository = require('../repositories/users.js');
 var hapi = require('hapi');
 
 module.exports.login = function (request, reply) {
-    //check cookie
     if (request.auth.isAuthenticated)
         return reply().redirect('/');
 
